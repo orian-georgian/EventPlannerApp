@@ -40,7 +40,7 @@ angular.module('starter.controllers', [])
     { title: 'Dubstep', id: 3 },
     { title: 'Indie', id: 4 },
     { title: 'Rap', id: 5 },
-    { title: 'Cowbellcel-de el', id: 6 }
+    { title: 'Manele', id: 6 }
   ];
 })
 
