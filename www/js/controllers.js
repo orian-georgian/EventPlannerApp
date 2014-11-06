@@ -8,17 +8,47 @@ angular.module('events.controllers', [])
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
   }).then(function(modal) {
-    $scope.modal = modal;
+    $scope.loginModal = modal;
+  });
+
+  $ionicModal.fromTemplateUrl('templates/register.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.registerModal = modal;
+  });
+
+  $ionicModal.fromTemplateUrl('templates/weddingPlan.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.weddingPlanModal = modal;
   });
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
-    $scope.modal.hide();
+    $scope.loginModal.hide();
+  };
+
+  $scope.closeRegister = function() {
+    $scope.registerModal.hide();
+  };
+
+  $scope.closeWeddingPlan = function() {
+    $scope.weddingPlanModal.hide();
+  };
+
+  $scope.register = function() {
+    $scope.registerModal.show();
+    $scope.closeLogin();
   };
 
   // Open the login modal
   $scope.login = function() {
-    $scope.modal.show();
+    $scope.loginModal.show();
+    $scope.closeRegister();
+  };
+
+  $scope.weddingPlan = function() {
+    $scope.weddingPlanModal.show();
   };
 
   // Perform the login action when the user submits the login form
@@ -31,22 +61,10 @@ angular.module('events.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
+
+  $scope.weddingPlan.budget = 40000;
 })
 
 .controller('EventsCtrl', function($scope, $ionicNavBarDelegate) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Manele', id: 6 }
-  ];
 
-  $scope.goBack = function() {
-    $ionicNavBarDelegate.back();
-  }; 
-})
-
-.controller('PlaylistCtrl', function($scope, $stateParams) {
 });

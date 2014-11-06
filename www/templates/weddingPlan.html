@@ -1,0 +1,41 @@
+<div class="modal form-modal">
+  <ion-header-bar>
+    <h1 class="title">Plan your wedding</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeWeddingPlan()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="planYourWedding()">
+      <div class="modal-form">
+          <label class="item item-input">
+            <input type="text" ng-model="weddingPlan.husbandName" placeholder = "Husband full name">
+          </label>
+          <label class="item item-input">
+            <input type="text" ng-model="weddingPlan.wifeName" placeholder = "Wife full name">
+          </label>
+          <label class="item item-input">
+            <input type="date" ng-model="weddingPlan.date" placeholder = "Deserved day">
+          </label>
+          <label class="item item-input">
+            <input type="text" ng-model="weddingPlan.place" placeholder = "Deserved location">
+          </label>
+          <label class="item item-input">
+            <input type="number" ng-model="weddingPlan.invited" placeholder = "Estimative number of invited">
+          </label>
+          <label class="item item-input">
+            <div class="list">
+              <div class="item range range-positive">
+                <i class="icon ion-social-usd-outline"></i>
+                <input type="range" name="volume" min="0" max="50000" ng-model = "weddingPlan.budget">
+                <i class="icon ion-social-usd"></i>
+                {{weddingPlan.budget}}
+              </div>
+            </div>
+          </label>
+          <button class="button button-positive button-block text-center" type="submit">Send your wish</button>
+      </div>
+    </form>
+  </ion-content>
+</div>
+

@@ -18,7 +18,7 @@
 
     module.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
       $stateProvider
-        .state('event', { url: "/events", templateUrl: "templates/events.html"})
+        .state('event', { url: "/events", templateUrl: "templates/events.html", controller: 'AppCtrl'})
         .state('menu', {
           url: "/menu",
           abstract: true,

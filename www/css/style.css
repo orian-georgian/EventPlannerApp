@@ -23,14 +23,20 @@
 		text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
 	}
 
-.login-modal {
+.form-modal {
 	background: url('../img/background.png') no-repeat;
 }
-
-	.login-modal .modal-form label{
-		margin: 10px;
+	
+	.form-modal .modal-form {
+		margin: 20px;
 	}
 
-	.login-modal .modal-form button{
-		margin: 10px;
+	.form-modal .modal-form .item-input{
+		border-radius: 10px;
+		border: 1px solid black;
+		margin: 20px 0;
+	}
+
+	.form-modal .text-black {
+		color: black;
 	}

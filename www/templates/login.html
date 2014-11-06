@@ -1,4 +1,4 @@
-<div class="modal login-modal">
+<div class="modal form-modal">
   <ion-header-bar>
     <h1 class="title">Login</h1>
     <div class="buttons">
@@ -14,8 +14,9 @@
           <label class="item item-input">
             <input type="password" ng-model="loginData.password" placeholder = "Password">
           </label>
-          <button class="button button-positive text-center col col-92" type="submit">Login</button>
-          <button class="button button-positive text-center col col-92" type="submit">Register</button>
+          <button class="button button-positive button-block text-center" type="submit">Login</button>
+          <button class = "button button-clear text-black" ng-click = "forget()">Forget your password?</button>
+          <button style="float:right;" class = "button button-clear text-black" ng-click = "register()">Register</button>
       </div>
     </form>
   </ion-content>
