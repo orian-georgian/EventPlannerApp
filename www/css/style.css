@@ -40,3 +40,21 @@
 	.form-modal .text-black {
 		color: black;
 	}
+
+.menu-container {
+	font-weight: 600;
+	font-size: 19px;
+	background-color: red;
+	text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
+}
+
+	.menu-container img {
+		width: 15%;
+		vertical-align: middle;
+		margin-right: 20px;
+	}
+
+	.menu-container .item-content {
+		border-top: 2px solid white;
+		background: url('../img/light-green.jpg') no-repeat;
+	}
