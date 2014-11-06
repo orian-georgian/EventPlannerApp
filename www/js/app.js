@@ -33,6 +33,15 @@
               controller: 'EventsCtrl'
             }
           }
+        })
+        .state('menu.invited', {
+          url: "/invited",
+          views: {
+            'menuContent' :{
+              templateUrl: "templates/invited.html",
+              controller: 'InvitedCtrl'
+            }
+          }
         });
        /*.state('app', { url: "/app", abstract: true, templateUrl: "templates/events.html", controller: 'PlaylistsCtrl' })
         .state('app.search', { url: "/search", views: { 'menuContent' : { templateUrl: "templates/search.html" } } })

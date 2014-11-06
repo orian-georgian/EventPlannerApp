@@ -1,0 +1,35 @@
+<div class="modal form-modal">
+  <ion-header-bar>
+    <h1 class="title">Save invited</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeInvited()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form>
+      <div class="modal-form">
+          <label class="item item-input">
+            <input type="text" ng-model="invitedPerson.firstName" placeholder = "First name">
+          </label>
+          <label class="item item-input">
+            <input type="text" ng-model="invitedPerson.lastName" placeholder = "Last name">
+          </label>
+          <label class="item item-input">
+            <input type="text" ng-model="invitedPerson.phoneNumber" placeholder = "Phone number">
+          </label>
+          <label class="item item-input">
+            <input type="email" ng-model="invitedPerson.mailAddress" placeholder = "E-mail address">
+          </label>
+          <label class="item item-input">
+            <input type="date" ng-model="invitedPerson.confirmationDate" placeholder = "Confirmation date">
+          </label>
+          <label class="item item-input">
+            <ion-radio ng-model="invitedPerson.man" ng-value="true">Male</ion-radio>
+            <ion-radio ng-model="invitedPerson.man" ng-value="false">Female</ion-radio>
+          </label>
+          <button class="button button-positive button-block text-center" type="button" ng-click = "addNewInvited(invitedPerson);">Save</button>
+      </div>
+    </form>
+  </ion-content>
+</div>
+

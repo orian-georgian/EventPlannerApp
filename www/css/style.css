@@ -58,3 +58,13 @@
 		border-top: 2px solid white;
 		background: url('../img/light-green.jpg') no-repeat;
 	}
+
+.invited .invited-list h2 {
+	color: #FF00CC;
+	font-weight: 800;
+}
+
+	.invited .invited-list .item {
+		background: url('../img/light-green.jpg') 100% no-repeat;
+	}
+

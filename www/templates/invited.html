@@ -1,0 +1,29 @@
+<ion-view title="Invited persons" class = "invited" animation="slide-left-right">
+    <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    </ion-nav-buttons>
+    <ion-content class="has-header">
+        <div class = "list invited-list">
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input class = "text-center" type="text" placeholder="Search" ng-model = "search.$">
+            </label>
+            <a class="item item-thumbnail-left item-icon-right" ng-repeat = "invited in invitedPeople | filter:search">
+                <img src="img/guy.png" ng-if = "invited.man">
+                <img src="img/lady.png" ng-if = "!invited.man">
+                <h2>{{invited.firstName}} {{invited.lastName}}</h2>
+                <p>{{invited.phoneNumber}}</p>
+                <p>{{invited.mailAddress}}</p>
+                <i class="icon ion-ios7-trash" ng-click = "invitedPeople.splice($index,1)"></i>
+            </a>
+        </div>
+    </ion-content>
+    <ion-footer-bar>
+        <div class="tabs tabs-icon-top">
+            <a class="tab-item" ng-click = "showInvited();">
+                <i class="icon ion-plus-round"></i>
+                Add invited
+            </a>
+        </div>
+    </ion-footer-bar>
+</ion-view>
