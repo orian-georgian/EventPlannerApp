@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('events.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   // Form data for the login modal
@@ -33,7 +33,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
+.controller('EventsCtrl', function($scope, $ionicNavBarDelegate) {
   $scope.playlists = [
     { title: 'Reggae', id: 1 },
     { title: 'Chill', id: 2 },
@@ -42,6 +42,10 @@ angular.module('starter.controllers', [])
     { title: 'Rap', id: 5 },
     { title: 'Manele', id: 6 }
   ];
+
+  $scope.goBack = function() {
+    $ionicNavBarDelegate.back();
+  }; 
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {

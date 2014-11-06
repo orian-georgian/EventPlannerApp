@@ -1,1 +1,36 @@
 /* Empty. Add your own CSS if you like */
+
+.main-window {
+	background: url('../img/background.png') no-repeat;
+}
+
+.main-window .event-box {
+	margin: 10px;
+}
+
+	.main-window .event-img {
+		height: 55px;
+		margin: 5px;
+		width: 55px;
+		border-radius: 30px;
+		box-shadow: 5px 3px 3px #FFC4EA;
+	}
+
+	.main-window span {
+		font-family: sand;
+		font-weight: 700;
+		color: #7A7A7A;
+		text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de, 0 0 150px #ff00de;
+	}
+
+.login-modal {
+	background: url('../img/background.png') no-repeat;
+}
+
+	.login-modal .modal-form label{
+		margin: 10px;
+	}
+
+	.login-modal .modal-form button{
+		margin: 10px;
+	}
