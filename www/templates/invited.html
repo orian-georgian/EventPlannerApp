@@ -8,13 +8,14 @@
                 <i class="icon ion-search placeholder-icon"></i>
                 <input class = "text-center" type="text" placeholder="Search" ng-model = "search.$">
             </label>
-            <a class="item item-thumbnail-left item-icon-right" ng-repeat = "invited in invitedPeople | filter:search">
+            <a class="item item-thumbnail-left " ng-repeat = "invited in invitedPeople | filter:search" ng-class = "{'item-invited': invited.wasInvited}">
                 <img src="img/guy.png" ng-if = "invited.man">
                 <img src="img/lady.png" ng-if = "!invited.man">
                 <h2>{{invited.firstName}} {{invited.lastName}}</h2>
                 <p>{{invited.phoneNumber}}</p>
                 <p>{{invited.mailAddress}}</p>
-                <i class="icon ion-ios7-trash" ng-click = "invitedPeople.splice($index,1)"></i>
+                <i class="icon ion-ios7-trash" ng-click = "removeInvited(invited)"></i>
+                <i class="icon ion-edit" ng-click = "editInvited(invited);"></i>
             </a>
         </div>
     </ion-content>

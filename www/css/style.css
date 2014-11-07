@@ -68,3 +68,19 @@
 		background: url('../img/light-green.jpg') 100% no-repeat;
 	}
 
+	.invited .invited-list .item-invited {
+		opacity: 0.8;
+		background: #D1D1D1 100%;
+	}
+
+
+.has-error {
+	background-color: #FFCCCC;
+}
+
+	.text-danger {
+		color: red;
+		margin-right: 15px;
+		font-size: 12px;
+		font-weight: 600;
+	}

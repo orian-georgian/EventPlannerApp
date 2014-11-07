@@ -75,7 +75,7 @@
     .controller('EventsCtrl', function($scope) {
     })
 
-    .controller('InvitedCtrl', function($scope, $ionicModal) {
+    .controller('InvitedCtrl', function($scope, $ionicModal, $ionicPopup) {
         $scope.invitedPeople = DataAdapter.GetInvited();
 
         $ionicModal.fromTemplateUrl('templates/newInvited.html', {
@@ -84,25 +84,83 @@
             $scope.invitedModal = modal;
         });
 
+        function emptyInputs() {
+          $scope.invitedPerson = {
+            firstName : null,
+            lastName : null,
+            phoneNumber : null,
+            mailAddress : null,
+            confirmationDate : null,
+            man: true
+          };
+        }
+
+        $scope.isHidden = false;
+
         $scope.showInvited = function() {
+          $scope.isHidden = true;
+          $scope.invitedPerson = {
+            man : true
+          };
           $scope.invitedModal.show();
         };
 
         $scope.closeInvited = function() {
           $scope.invitedModal.hide();
+          emptyInputs();
         };
 
         $scope.addNewInvited = function(invitedPerson) {
             var newInvited = {
+                id : Math.floor((Math.random() * 1000) + 1),
                 firstName : invitedPerson.firstName,
                 lastName : invitedPerson.lastName,
                 phoneNumber : invitedPerson.phoneNumber,
                 mailAddress : invitedPerson.mailAddress,
                 confirmationDate : invitedPerson.confirmationDate,
-                man : invitedPerson.man
+                man : invitedPerson.man,
+                wasInvited: false
             };
             $scope.invitedPeople.push(newInvited);
             $scope.closeInvited();
+            emptyInputs();
+        };
+
+        $scope.editInvited = function(invited) {
+
+            $scope.showInvited();
+            $scope.isHidden = false;
+            $scope.invitedPerson = {
+              id : invited.id,
+              firstName : invited.firstName,
+              lastName : invited.lastName,
+              phoneNumber : invited.phoneNumber,
+              mailAddress : invited.mailAddress,
+              confirmationDate : invited.confirmationDate,
+              man : invited.man,
+              wasInvited : invited.wasInvited
+            };
+        };
+
+        $scope.saveInvited = function(currentInvited) {
+          var wantedInvited = _.find($scope.invitedPeople, { id : currentInvited.id} ); 
+          _.merge(wantedInvited, currentInvited);
+          $scope.closeInvited();
+        };
+
+        $scope.removeInvited = function(currentInvited) {
+          var confirmPopup = $ionicPopup.confirm({
+            title: 'Invited remove',
+            template: 'Are you sure you want to remove <strong>' + currentInvited.firstName + ' ' + currentInvited.lastName + '</strong>?'
+          });
+          confirmPopup.then(function(res) {
+            if(res) {
+              var index = $scope.invitedPeople.indexOf(currentInvited);
+              $scope.invitedPeople.splice(index, 1);
+            } else {
+              return;
+            }
+          });
         };
 
     });
