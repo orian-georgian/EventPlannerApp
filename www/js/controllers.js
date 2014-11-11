@@ -73,6 +73,7 @@
     })
 
     .controller('EventsCtrl', function($scope) {
+
     })
 
     .controller('InvitedCtrl', function($scope, $ionicModal, $ionicPopup) {

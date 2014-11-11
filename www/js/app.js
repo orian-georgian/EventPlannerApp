@@ -1,6 +1,6 @@
 (function(angular){
 
-    var module = angular.module('eventPlanner', ['ionic', 'events.controllers'])
+    var module = angular.module('eventPlanner', ['ionic', 'events.models', 'events.controllers', 'events.services'])
 
     module.run(function($ionicPlatform) {
       $ionicPlatform.ready(function() {
@@ -15,6 +15,8 @@
         }
       });
     });
+
+    module.value('GOOGLE_API', 'https://www.googleapis.com/calendar/v3/');
 
     module.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
       $stateProvider
@@ -65,7 +67,12 @@
           }
         });*/
         // if none of the above states are matched, use this as the fallback
-      $urlRouterProvider.otherwise('/events');
+      /*$urlRouterProvider.otherwise('/events');
+       googleLoginProvider.configure({
+            clientId: '546633364756-54l9fd0ve8b179qp5dv2qpvvlbkq0uam.apps.googleusercontent.com',
+            scopes: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/calendar']
+        });
+        $parseProvider.unwrapPromises(true);*/
     }]);
 
 }).call(this, this.angular);
