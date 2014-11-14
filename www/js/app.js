@@ -1,6 +1,6 @@
 (function(angular){
 
-    var module = angular.module('eventPlanner', ['ionic', 'events.models', 'events.controllers', 'events.services'])
+    var module = angular.module('eventPlanner', ['ionic', 'events.models', 'events.controllers', 'events.services', 'ngCookies'])
 
     module.run(function($ionicPlatform) {
       $ionicPlatform.ready(function() {
