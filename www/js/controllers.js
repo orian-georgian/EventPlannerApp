@@ -7,9 +7,14 @@
 
     angular.module('events.controllers', [])
 
-    .controller('AppCtrl', function($scope, $ionicModal, $timeout, $cookieStore, AuthenticationService, AuthenticationModel) {
+    .controller('AppCtrl', function($scope, $ionicModal, $ionicPopup, $timeout, $cookieStore, AuthenticationService, AuthenticationModel, WeddingService) {
 
       var authModel = $cookieStore.get('login.state');
+      $scope.minDate = new moment().format('YYYY-MM-DD');
+      $scope.weddingPlan = {
+        budget: 40000
+      };
+          
       if (authModel) {
         AuthenticationModel = authModel;
         $scope.authenticationModel = authModel;
@@ -25,9 +30,17 @@
       });
 
       $scope.logout = function() {
-        gapi.auth.signOut();
-        AuthenticationModel.isLoggedIn = false;
-        $cookieStore.remove('login.state');
+        var confirmPopup = $ionicPopup.confirm({
+          title: 'Logout',
+          template: 'Are you sure you want to logoff?'
+        });
+        confirmPopup.then(function(res) {
+          if(res) {
+            AuthenticationService.logout().then();
+          } else {
+            return;
+          }
+        });
       };
 
       $scope.closeWeddingPlan = function() {
@@ -40,24 +53,30 @@
         })
       };
 
-      $scope.weddingPlan = function() {
+      $scope.weddingPlanBox = function() {
         $scope.weddingPlanModal.show();
       };
 
-      $scope.weddingPlan.budget = 40000;
+      $scope.planYourWedding = function() {
+          WeddingService.makeAWish($scope.weddingPlan).then(function(){
+            $scope.closeWeddingPlan();
+          });
+      };
+
 
     })
 
-    .controller('EventsCtrl', function($scope, $timeout) {
-        $timeout(function(){
-            gapi.client.oauth2.userinfo.get().execute(function (response){
-        console.log(response);
-      });
-        }, 2000);
-    })
+    .controller('InvitedCtrl', function($scope, $ionicModal, $ionicPopup, InvitedService) {
 
-    .controller('InvitedCtrl', function($scope, $ionicModal, $ionicPopup) {
-        $scope.invitedPeople = DataAdapter.GetInvited();
+      function initialize() {
+        InvitedService.getGoogleContacts().then(function(data){
+          console.log(data);
+          $scope.invitedPeople = data;
+        });
+      }
+
+      initialize();
+        /*$scope.invitedPeople = DataAdapter.GetInvited();
 
         $ionicModal.fromTemplateUrl('templates/newInvited.html', {
             scope: $scope
@@ -128,21 +147,40 @@
           _.merge(wantedInvited, currentInvited);
           $scope.closeInvited();
         };
-
+*/
         $scope.removeInvited = function(currentInvited) {
           var confirmPopup = $ionicPopup.confirm({
             title: 'Invited remove',
-            template: 'Are you sure you want to remove <strong>' + currentInvited.firstName + ' ' + currentInvited.lastName + '</strong>?'
+            template: 'Are you sure you want to remove <strong>' + currentInvited.fullName + '</strong>?'
           });
           confirmPopup.then(function(res) {
             if(res) {
-              var index = $scope.invitedPeople.indexOf(currentInvited);
-              $scope.invitedPeople.splice(index, 1);
+              InvitedService.removeContact(currentInvited.contactId).then(initialize);
             } else {
               return;
             }
           });
         };
+
+    })
+
+    .controller('EventsCtrl', function($scope, $timeout, $http, $cookieStore) {
+      /*var authModel = $cookieStore.get('login.state');
+      $http({
+        url: 'https://www.google.com/m8/feeds/contacts/' + authModel.email + '/full?max-results=1000',
+        method: 'GET',
+        params: {
+          access_token : authModel.token,
+          alt: 'json'
+        }
+      })
+      .success(function(data){
+        console.log(data);
+        $scope.
+      })
+      .error(function(error){
+        console.log(error);
+      });*/
 
     });
 

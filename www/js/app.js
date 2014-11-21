@@ -45,34 +45,7 @@
             }
           }
         });
-       /*.state('app', { url: "/app", abstract: true, templateUrl: "templates/events.html", controller: 'PlaylistsCtrl' })
-        .state('app.search', { url: "/search", views: { 'menuContent' : { templateUrl: "templates/search.html" } } })
-        .state('app.browse', { url: "/browse", views: { 'menuContent' : { templateUrl: "templates/browse.html" } } })
-        .state('app.playlists', { 
-          url: "/playlists",
-            views: {
-              'menuContent' : {
-                templateUrl: "templates/events.html",
-                controller: 'PlaylistsCtrl'
-            }
-          }
-        })
-        .state('app.single', {
-          url: "/playlists/:playlistId",
-          views: {
-            'menuContent' :{
-              templateUrl: "templates/playlist.html",
-              controller: 'PlaylistCtrl'
-            }
-          }
-        });*/
-        // if none of the above states are matched, use this as the fallback
-      /*$urlRouterProvider.otherwise('/events');
-       googleLoginProvider.configure({
-            clientId: '546633364756-54l9fd0ve8b179qp5dv2qpvvlbkq0uam.apps.googleusercontent.com',
-            scopes: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/calendar']
-        });
-        $parseProvider.unwrapPromises(true);*/
+        $urlRouterProvider.otherwise('/events');
     }]);
 
 }).call(this, this.angular);

@@ -7,7 +7,8 @@
 	module.factory('AuthenticationModel', function(){
 		var authenticationModel = {
 			isLoggedIn : false,
-			token : null
+			token : null,
+			email : null
 		};
 		return authenticationModel;
 	});

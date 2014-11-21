@@ -35,9 +35,13 @@
           <img src="img/invited.png">
           Invited persons
         </ion-item>
-        <ion-item nav-clear menu-close href = "" ng-click = "login();">
+        <ion-item nav-clear menu-close href = "" ng-hide = "authenticationModel.isLoggedIn" ng-click = "login();">
           <img src="img/login.png">
           Login
+        </ion-item>
+        <ion-item nav-clear menu-close href = "" ng-show = "authenticationModel.isLoggedIn" ng-click = "logout();">
+          <img src="img/login.png">
+          Logout
         </ion-item>
       </ion-list>
     </ion-content>

@@ -6,34 +6,41 @@
     </div>
   </ion-header-bar>
   <ion-content>
-    <form ng-submit="planYourWedding()">
+    <form ng-submit="planYourWedding()" name = "wishForm" novalidate>
       <div class="modal-form">
-          <label class="item item-input">
-            <input type="text" ng-model="weddingPlan.husbandName" placeholder = "Husband full name">
+          <label class="item item-input" ng-class = "{'has-error' : wishForm.husband.$invalid}">
+            <input type="text" name = "husband" ng-model="weddingPlan.husbandName" placeholder = "Husband full name" required>
+            <span class = "text-danger" ng-show = "wishForm.husband.$error.required">Required!</span>
           </label>
-          <label class="item item-input">
-            <input type="text" ng-model="weddingPlan.wifeName" placeholder = "Wife full name">
+          <label class="item item-input" ng-class = "{'has-error' : wishForm.wife.$invalid}">
+            <input type="text" name = "wife" ng-model="weddingPlan.wifeName" placeholder = "Wife full name" required>
+            <span class = "text-danger" ng-show = "wishForm.wife.$error.required">Required!</span>
           </label>
-          <label class="item item-input">
-            <input type="date" ng-model="weddingPlan.date" placeholder = "Deserved day">
+          <label class="item item-input" ng-class = "{'has-error' : wishForm.dateW.$invalid}">
+            <input type = "text" name = "dateW" ng-model="weddingPlan.date" min="minDate" required>
+            <span class = "text-danger" ng-show = "wishForm.dateW.$error.min">Date is obsolite!</span>
           </label>
-          <label class="item item-input">
-            <input type="text" ng-model="weddingPlan.place" placeholder = "Deserved location">
+
+          <label class="item item-input" ng-class = "{'has-error' : wishForm.location.$invalid}">
+            <input type="text" name = "location" ng-model="weddingPlan.place" placeholder = "Deserved location" required>
+            <span class = "text-danger" ng-show = "wishForm.location.$error.required">Required!</span>
           </label>
-          <label class="item item-input">
-            <input type="number" ng-model="weddingPlan.invited" placeholder = "Estimative number of invited">
+          <label class="item item-input" ng-class = "{'has-error' : wishForm.invited.$invalid}">
+            <input type="number" name = "invited" min="1" max="1000" ng-model="weddingPlan.invited" placeholder = "Estimative number of invited" required>
+            <span class = "text-danger" ng-show = "wishForm.invited.$error.required">Required!</span>
+            <span class = "text-danger" ng-show = "wishForm.invited.$error.number">Must be positive number between 1 and 1000!</span>
           </label>
-          <label class="item item-input">
-            <div class="list">
-              <div class="item range range-positive">
+          <label class="item item-input" >
+            <div class="list" style="width:100%;">
+              <div class="item range range-positive" >
                 <i class="icon ion-social-usd-outline"></i>
-                <input type="range" name="volume" min="0" max="50000" ng-model = "weddingPlan.budget">
-                <i class="icon ion-social-usd"></i>
+                <input type="range" name="budget" min="0" max="50000" ng-model = "weddingPlan.budget" value="weddingPlan.budget" required>
+                <i class="icon ion-social-usd"></i>             
                 {{weddingPlan.budget}}
               </div>
             </div>
           </label>
-          <button class="button button-positive button-block text-center" type="submit">Send your wish</button>
+          <button class="button button-positive button-block text-center" type="submit" ng-disabled = "wishForm.$invalid">Send your wish</button>
       </div>
     </form>
   </ion-content>
