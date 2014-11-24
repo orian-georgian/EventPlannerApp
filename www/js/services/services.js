@@ -21,7 +21,7 @@
 			    'cookiepolicy' : 'single_host_origin',
 			    'immediate': true,
 			    'callback' : handleLogin,
-			    'scope' : 'https://www.google.com/m8/feeds https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read https://www.googleapis.com/auth/plus.me'
+			    'scope' : 'https://apps-apis.google.com/a/feeds/groups/ https://apps-apis.google.com/a/feeds/alias/ https://apps-apis.google.com/a/feeds/user/ https://www.google.com/m8/feeds/ https://www.google.com/m8/feeds/user/ https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read https://www.googleapis.com/auth/plus.me'
 			  };
 			  gapi.auth.signIn(myParams);
 		};
@@ -124,23 +124,44 @@
 			return result.promise;
 		};
 
+		function doThat(data){
+			console.log(data);
+		}
+
 		this.removeContact = function(contactId) {
 			var result = $q.defer();
 
-			$http({
-				url : 'https://www.google.com/m8/feeds/contacts/' + authModel.email + '/full/' + contactId,
+			/*$http({
+				url : 'https://www.google.com/m8/feeds/contacts/default/full/' + contactId,
 				method: 'DELETE',
+				headers: {
+					'If-Match': '*'
+				},
 		        params: {
 		          access_token : authModel.token,
 		          alt: 'json'
 		        }
 			})
 			.success(function(data){
-				result.resolve(data);
+				result.resolve('bla',data);
 			})
 			.error(function(error){
 				result.reject(error);
-			});
+			});*/
+
+			gapi.client.request({
+					path: '/m8/feeds/contacts/' + authModel.email + '/full/' + contactId,
+					method: 'POST',
+					params: {
+						access_token : authModel.token,
+		          		alt: 'json'
+					},
+					headers: {
+						'X-HTTP-Method-Override': 'DELETE',
+						'If-Match': '*'
+					},
+					callback: doThat
+				});
 
 			return result.promise;
 		};

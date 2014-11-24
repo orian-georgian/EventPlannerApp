@@ -12,8 +12,21 @@
       var authModel = $cookieStore.get('login.state');
       $scope.minDate = new moment().format('YYYY-MM-DD');
       $scope.weddingPlan = {
-        budget: 40000
+        budget: 40000,
+        date: '11/11/2014'
       };
+
+
+      $scope.dateOptions = {
+    formatYear: 'yy',
+    startingDay: 1
+  };
+
+  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+  $scope.format = $scope.formats[0];
+
+      $scope.needToAddHusband = false;
+      $scope.needToAddWife = false;
           
       if (authModel) {
         AuthenticationModel = authModel;
@@ -48,7 +61,7 @@
       };
 
       $scope.login = function() {
-        AuthenticationService.login($scope).then(function(authenticationModel){
+        AuthenticationService.login().then(function(authenticationModel){
             $scope.authenticationModel = authenticationModel;
         })
       };
@@ -63,6 +76,26 @@
           });
       };
 
+      $scope.openHusbandForm = function() {
+        $scope.needToAddHusband = !$scope.needToAddHusband;
+      };
+
+      $scope.openWifeForm = function() {
+        $scope.needToAddWife = !$scope.needToAddWife;
+      };
+
+      $scope.addHusbandInfo = function() {
+        $scope.needToAddHusband = false;
+      };
+
+      $scope.addWifeInfo = function() {
+        $scope.needToAddWife = false;
+      };
+
+      $scope.disableLink = function(){
+        return $scope.needToAddWife;
+      };
+
 
     })
 
@@ -70,7 +103,6 @@
 
       function initialize() {
         InvitedService.getGoogleContacts().then(function(data){
-          console.log(data);
           $scope.invitedPeople = data;
         });
       }

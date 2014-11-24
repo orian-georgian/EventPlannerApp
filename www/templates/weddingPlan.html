@@ -6,18 +6,80 @@
     </div>
   </ion-header-bar>
   <ion-content>
-    <form ng-submit="planYourWedding()" name = "wishForm" novalidate>
+    <form name = "wishForm" novalidate>
       <div class="modal-form">
-          <label class="item item-input" ng-class = "{'has-error' : wishForm.husband.$invalid}">
-            <input type="text" name = "husband" ng-model="weddingPlan.husbandName" placeholder = "Husband full name" required>
-            <span class = "text-danger" ng-show = "wishForm.husband.$error.required">Required!</span>
-          </label>
-          <label class="item item-input" ng-class = "{'has-error' : wishForm.wife.$invalid}">
-            <input type="text" name = "wife" ng-model="weddingPlan.wifeName" placeholder = "Wife full name" required>
-            <span class = "text-danger" ng-show = "wishForm.wife.$error.required">Required!</span>
-          </label>
+          <div class = "row">
+              <button href ng-click = "openHusbandForm();"><i class="icon ion-plus"></i> Add/Change husband info</button>
+          </div>
+          <div ng-show = "needToAddHusband">
+              <label class="item item-input" ng-class = "{'has-error' : wishForm.hname.$invalid}">
+                <input type="text" name = "hname" ng-model="weddingPlan.husband.name" placeholder = "Husband full name" required>
+                <span class = "text-danger" ng-show = "wishForm.hname.$error.required">Required!</span>
+              </label>
+
+              <label class="item item-input" ng-class = "{'has-error' : wishForm.hphone.$invalid}">
+                <input type="text" name = "hphone" ng-model="weddingPlan.husband.phoneNumber" placeholder = "Husband phone number" required>
+                <span class = "text-danger" ng-show = "wishForm.hphone.$error.required">Required!</span>
+              </label>
+
+              <label class="item item-input">
+                <input type="text" ng-model="weddingPlan.husband.email" placeholder = "Husband email address">
+              </label>
+              <button class="button button-positive button-small pull-right" ng-click = "addHusbandInfo();" ng-disabled = "!(weddingPlan.husband.name && weddingPlan.husband.phoneNumber)">Save</button>
+          </div>
+          <div class="row" ng-if = "weddingPlan.husband" ng-hide = "needToAddHusband">
+              <div class = "col">
+                  <i class="icon ion-person"></i>
+                  {{weddingPlan.husband.name}}
+              </div>
+              <div class = "col">
+                  <i class="icon ion-ios7-telephone"></i>
+                  {{weddingPlan.husband.phoneNumber}}
+              </div>
+              <div class = "col" ng-if = "weddingPlan.husband.email" >
+                  <i class="icon ion-email"></i>
+                  {{weddingPlan.husband.email}}
+              </div>
+          </div>
+          <div class = "row">
+              <button href = "" ng-click = "openWifeForm();"><i class="icon ion-plus"></i> Add/Change wife info</button>
+          </div>
+          <div ng-show = "needToAddWife">
+              <label class="item item-input" ng-class = "{'has-error' : wishForm.wname.$invalid}">
+                <input type="text" name = "wname" ng-model="weddingPlan.wife.name" placeholder = "Wife full name" required>
+                <span class = "text-danger" ng-show = "wishForm.wname.$error.required">Required!</span>
+              </label>
+
+              <label class="item item-input" ng-class = "{'has-error' : wishForm.wphone.$invalid}">
+                <input type="text" name = "wphone" ng-model="weddingPlan.wife.phoneNumber" placeholder = "Wife phone number" required>
+                <span class = "text-danger" ng-show = "wishForm.wphone.$error.required">Required!</span>
+              </label>
+
+              <label class="item item-input">
+                <input type="text" name = "wemail" ng-model="weddingPlan.wife.email" placeholder = "Wife email address">
+              </label>
+              <button class="button button-positive button-small pull-right" ng-click = "addWifeInfo();" ng-disabled = "!(weddingPlan.wife.name && weddingPlan.wife.phoneNumber)">Save</button>
+          </div>
+
+          <div class="row" ng-if = "weddingPlan.wife" ng-hide = "needToAddWife">
+              <div class = "col">
+                  <i class="icon ion-person"></i>
+                  {{weddingPlan.wife.name}}
+              </div>
+              <div class = "col">
+                  <i class="icon ion-ios7-telephone"></i>
+                  {{weddingPlan.wife.phoneNumber}}
+              </div>
+              <div class = "col" ng-if = "weddingPlan.wife.email" >
+                  <i class="icon ion-email"></i>
+                  {{weddingPlan.wife.email}}
+              </div>
+          </div>
+
+          <br/>
           <label class="item item-input" ng-class = "{'has-error' : wishForm.dateW.$invalid}">
-            <input type = "text" name = "dateW" ng-model="weddingPlan.date" min="minDate" required>
+            <!-- <input type = "text" name = "dateW" ng-model="weddingPlan.date" min="minDate" required> -->
+            <input type="text" pick-a-date="weddingPlan.date" placeholder="Select Date" /> {{ weddingPlan.date }}
             <span class = "text-danger" ng-show = "wishForm.dateW.$error.min">Date is obsolite!</span>
           </label>
 
@@ -40,7 +102,7 @@
               </div>
             </div>
           </label>
-          <button class="button button-positive button-block text-center" type="submit" ng-disabled = "wishForm.$invalid">Send your wish</button>
+          <button class="button button-positive button-block text-center" ng-click = "planYourWedding();" ng-disabled = "wishForm.$invalid">Send your wish</button>
       </div>
     </form>
   </ion-content>
