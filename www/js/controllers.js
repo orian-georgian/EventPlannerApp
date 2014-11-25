@@ -12,18 +12,16 @@
       var authModel = $cookieStore.get('login.state');
       $scope.minDate = new moment().format('YYYY-MM-DD');
       $scope.weddingPlan = {
-        budget: 40000,
-        date: '11/11/2014'
+        budget: 40000
       };
 
+      $scope.datesAreEqual = function() {
+          return $scope.minDate > $scope.weddingPlan.date;
+      };
 
-      $scope.dateOptions = {
-    formatYear: 'yy',
-    startingDay: 1
-  };
-
-  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-  $scope.format = $scope.formats[0];
+      $scope.isPositiveNumber = function(number) {
+        return number < 0 || number > 50000;
+      };
 
       $scope.needToAddHusband = false;
       $scope.needToAddWife = false;

@@ -77,10 +77,10 @@
           </div>
 
           <br/>
-          <label class="item item-input" ng-class = "{'has-error' : wishForm.dateW.$invalid}">
-            <!-- <input type = "text" name = "dateW" ng-model="weddingPlan.date" min="minDate" required> -->
-            <input type="text" pick-a-date="weddingPlan.date" placeholder="Select Date" /> {{ weddingPlan.date }}
-            <span class = "text-danger" ng-show = "wishForm.dateW.$error.min">Date is obsolite!</span>
+          <label class="item item-input" ng-class = "{'has-error' : wishForm.dateW.$invalid || datesAreEqual()}">
+            <input type = "date" name = "dateW" ng-model="weddingPlan.date" required>
+            <span class = "text-danger" ng-show = "wishForm.dateW.$error.required">Required!</span>
+            <span class = "text-danger" ng-show = "datesAreEqual();">Date is obsolite!</span>
           </label>
 
           <label class="item item-input" ng-class = "{'has-error' : wishForm.location.$invalid}">
@@ -96,13 +96,14 @@
             <div class="list" style="width:100%;">
               <div class="item range range-positive" >
                 <i class="icon ion-social-usd-outline"></i>
-                <input type="range" name="budget" min="0" max="50000" ng-model = "weddingPlan.budget" value="weddingPlan.budget" required>
-                <i class="icon ion-social-usd"></i>             
-                {{weddingPlan.budget}}
+                <input type="range" name="budget" min="0" max="50000" ng-model = "weddingPlan.budget"  required>
+                <i class="icon ion-social-usd"></i>           
+                <input class = "budget-input" type="text" name = "budget" ng-pattern = "/^[0-9]+$/" ng-model="weddingPlan.budget" placeholder = "Budget" required>
+                <span class = "text-danger" ng-show = "isPositiveNumber(weddingPlan.budget) || wishForm.budget.$error.pattern">Must be number between 1 and 50000!</span>
               </div>
             </div>
           </label>
-          <button class="button button-positive button-block text-center" ng-click = "planYourWedding();" ng-disabled = "wishForm.$invalid">Send your wish</button>
+          <button class="button button-positive button-block text-center" ng-click = "planYourWedding();" ng-disabled = "wishForm.$invalid || datesAreEqual() || isPositiveNumber()">Send your wish</button>
       </div>
     </form>
   </ion-content>
