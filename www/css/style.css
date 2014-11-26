@@ -138,7 +138,11 @@
 }
 /* overwrite */
 .has-header {
-    margin-top: 125px;
+    margin-top: 0;
+}
+
+.has-header-main {
+	margin-top: 125px;
 }
 /* event icons */
 .EventsIcons{

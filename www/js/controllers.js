@@ -99,13 +99,26 @@
 
     .controller('InvitedCtrl', function($scope, $ionicModal, $ionicPopup, InvitedService) {
 
-      function initialize() {
-        InvitedService.getGoogleContacts().then(function(data){
-          $scope.invitedPeople = data;
+      $ionicModal.fromTemplateUrl('templates/googleContacts.html', {
+            scope: $scope
+        }).then(function(modal) {
+            $scope.googleModal = modal;
         });
-      }
 
-      initialize();
+      $scope.importGoogleContacts = function() {
+        InvitedService.getGoogleContacts().then(function(data){
+          $scope.googleContacts = data;
+          $scope.googleModal.show();
+        });
+      };
+
+      $scope.closeGoogleContacts = function() {
+        $scope.googleModal.hide();
+      };
+
+      $scope.saveContacts = function() {
+        console.log(_.where($scope.googleContacts, {toSave:true}));
+      };
         /*$scope.invitedPeople = DataAdapter.GetInvited();
 
         $ionicModal.fromTemplateUrl('templates/newInvited.html', {
@@ -178,7 +191,7 @@
           $scope.closeInvited();
         };
 */
-        $scope.removeInvited = function(currentInvited) {
+        /*$scope.removeInvited = function(currentInvited) {
           var confirmPopup = $ionicPopup.confirm({
             title: 'Invited remove',
             template: 'Are you sure you want to remove <strong>' + currentInvited.fullName + '</strong>?'
@@ -190,7 +203,7 @@
               return;
             }
           });
-        };
+        };*/
 
     })
 
