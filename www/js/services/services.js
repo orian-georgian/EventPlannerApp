@@ -17,7 +17,7 @@
 		var doLogin = function() {
 			
 			var myParams = {
-			    'clientid' : '285780208615-asn44qdasii9ivcs91sc2i6nm0mmjad5.apps.googleusercontent.com',
+			    'clientid' : '285780208615-iech8k82l3qjb8q51d7kveog1qomaj4s.apps.googleusercontent.com',
 			    'cookiepolicy' : 'single_host_origin',
 			    'immediate': true,
 			    'callback' : handleLogin,
