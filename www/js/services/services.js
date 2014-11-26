@@ -107,7 +107,7 @@
 			var result = $q.defer();
 
 			$http({
-				url : 'https://www.google.com/m8/feeds/contacts/' + authModel.email + '/full?max-results=1000',
+				url : 'https://www.google.com/m8/feeds/contacts/default/full?max-results=1000',
 				method: 'GET',
 		        params: {
 		          access_token : authModel.token,
