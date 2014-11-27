@@ -4,20 +4,29 @@
     </ion-nav-buttons>
     <ion-content class="has-header">
         <div class="list card">
-            <div class="item item-avatar">
-                <img src = "../img/guy.png" />
-                <h2><strong>Invited list</strong></h2>
-                <p>Google contacts import</p>
-            </div>
-
-            <div class="item item-body">
-                <span>There is no invited added or imported!</span>
-            </div>
-
             <a class="item item-icon-left assertive" href="" ng-click = "importGoogleContacts();">
                 <i class="icon ion-social-google"></i>
-                Import google contacts
+                Import contacts from google account
             </a>
+
+            <div ng-hide = "!isEmpty(invitedContacts)" class="item item-body">
+                <span>There is no invited added or imported!</span>
+            </div>
+            <div ng-show = "!isEmpty(invitedContacts)" class="item item-body item-icon" ng-repeat = "contact in invitedContacts | orderBy : 'fullName'">
+                <div class = "row">
+                    <div class = "col col-90">
+                        <strong>{{contact.fullName}}</strong> - <span>{{contact.phoneNumber}}</span><br/>
+                        <span ng-hide = "contact.wasInvited">Not invited <a href = "" ng-click = "confirmInvitation(contact);"><i class="icon ion-checkmark-circled"></i></a></span>
+                        <span ng-show = "contact.wasInvited">Invited <a href = "" ng-click = "denyInvitation(contact);"><i class="icon ion-close-circled"></i></a></span>
+                        <span ng-hide = "contact.hasConfirmed">Hasn't confirmed <a href = "" ng-click = "confirmConfirmation(contact);"><i class="icon ion-checkmark-circled"></i></a></span>
+                        <span ng-show = "contact.hasConfirmed">Has confirmed <a href = "" ng-click = "denyConfirmation(contact);"><i class="icon ion-close-circled"></i></a></span>
+                    </div>
+                    <div class =  "col-col-90 invited-icons">
+                        <a href = "" ng-click = "editContact(contact);"><i class="icon ion-compose"></i></a>
+                        <a href = "" ng-click = "removeContact(contact);"><i class="icon ion-ios7-trash"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </ion-content>
     <ion-footer-bar>

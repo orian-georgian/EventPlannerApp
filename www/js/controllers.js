@@ -2,9 +2,6 @@
 
     'use strict';
 
-    var DataAdapter = new this.DataAdapter(),
-        DataModel = this.DataModel;
-
     angular.module('events.controllers', [])
 
     .controller('AppCtrl', function($scope, $ionicModal, $ionicPopup, $timeout, $cookieStore, AuthenticationService, AuthenticationModel, WeddingService) {
@@ -99,6 +96,9 @@
 
     .controller('InvitedCtrl', function($scope, $ionicModal, $ionicPopup, InvitedService) {
 
+      $scope.invitedContacts = [];
+      $scope.isHidden = true;
+
       function isEmpty(data) {
         return _.isEmpty(data) || _.isNull(data) || _.isUndefined(data);
       }
@@ -128,11 +128,15 @@
            template: 'Please select some contacts to add!'
          });
         } else {
-          console.log(selectedContacts);
+          _.each(selectedContacts, function(contact) {
+            if (!_.find($scope.invitedContacts, { contactId : contact.contactId })) {
+              $scope.invitedContacts.push(contact);
+            }
+          });
+          $scope.closeGoogleContacts();
           /*InvitedService.sendSelectedContacts(selectedContacts).then();*/
         }
       };
-        /*$scope.invitedPeople = DataAdapter.GetInvited();
 
         $ionicModal.fromTemplateUrl('templates/newInvited.html', {
             scope: $scope
@@ -142,22 +146,16 @@
 
         function emptyInputs() {
           $scope.invitedPerson = {
-            firstName : null,
-            lastName : null,
+            fullName : null,
             phoneNumber : null,
             mailAddress : null,
-            confirmationDate : null,
-            man: true
+            homeAddress : null
           };
+          $scope.isHidden = true;
         }
 
-        $scope.isHidden = false;
 
         $scope.showInvited = function() {
-          $scope.isHidden = true;
-          $scope.invitedPerson = {
-            man : true
-          };
           $scope.invitedModal.show();
         };
 
@@ -167,56 +165,81 @@
         };
 
         $scope.addNewInvited = function(invitedPerson) {
-            var newInvited = {
-                id : Math.floor((Math.random() * 1000) + 1),
-                firstName : invitedPerson.firstName,
-                lastName : invitedPerson.lastName,
+            var contact = {
+                contactId : invitedPerson.fullName + invitedPerson.phoneNumber,
+                fullName : invitedPerson.fullName,
                 phoneNumber : invitedPerson.phoneNumber,
                 mailAddress : invitedPerson.mailAddress,
-                confirmationDate : invitedPerson.confirmationDate,
-                man : invitedPerson.man,
-                wasInvited: false
+                homeAddress : invitedPerson.homeAddress,
+                hasConfirmed : false,
+                tableNumber : null,
+                wasInvited : false
             };
-            $scope.invitedPeople.push(newInvited);
+            /*InvitedService.addNewContact(contact).then(function(){
+              $scope.closeInvited();
+              emptyInputs();
+            });*/
+            $scope.invitedContacts.push(contact);
             $scope.closeInvited();
-            emptyInputs();
         };
 
-        $scope.editInvited = function(invited) {
+        $scope.editContact = function(currentContact) {
 
             $scope.showInvited();
             $scope.isHidden = false;
             $scope.invitedPerson = {
-              id : invited.id,
-              firstName : invited.firstName,
-              lastName : invited.lastName,
-              phoneNumber : invited.phoneNumber,
-              mailAddress : invited.mailAddress,
-              confirmationDate : invited.confirmationDate,
-              man : invited.man,
-              wasInvited : invited.wasInvited
+                contactId : currentContact.contactId,
+                fullName : currentContact.fullName,
+                phoneNumber : currentContact.phoneNumber,
+                mailAddress : currentContact.mailAddress,
+                homeAddress : currentContact.homeAddress,
+                hasConfirmed : currentContact.hasConfirmed,
+                tableNumber : currentContact.tableNumber,
+                wasInvited : currentContact.wasInvited
             };
         };
 
-        $scope.saveInvited = function(currentInvited) {
-          var wantedInvited = _.find($scope.invitedPeople, { id : currentInvited.id} ); 
-          _.merge(wantedInvited, currentInvited);
+        $scope.saveContact = function(currentContact) {
+          var wantedInvited = _.find($scope.invitedContacts, { contactId : currentContact.contactId} ); 
+          _.merge(wantedInvited, currentContact);
           $scope.closeInvited();
         };
-*/
-        /*$scope.removeInvited = function(currentInvited) {
+
+        $scope.removeContact = function(currentContact) {
           var confirmPopup = $ionicPopup.confirm({
-            title: 'Invited remove',
-            template: 'Are you sure you want to remove <strong>' + currentInvited.fullName + '</strong>?'
+            title: 'Remove contact',
+            template: 'Are you sure you want to remove <strong>' + currentContact.fullName + '</strong>?'
           });
           confirmPopup.then(function(res) {
             if(res) {
-              InvitedService.removeContact(currentInvited.contactId).then(initialize);
+              var index = $scope.invitedContacts.indexOf(currentContact);
+              $scope.invitedContacts.splice(index, 1);
+              /*InvitedService.removeContact(currentContact.contactId).then(initialize);*/
             } else {
               return;
             }
           });
-        };*/
+        };
+
+        $scope.confirmInvitation = function(contact) {
+          contact.wasInvited = true;
+        };
+
+        $scope.confirmConfirmation = function(contact) {
+          contact.hasConfirmed = true;
+        };
+
+        $scope.denyInvitation = function(contact) {
+          contact.wasInvited = false;
+        };
+
+        $scope.denyConfirmation = function(contact) {
+          contact.hasConfirmed = false;
+        };
+
+
+
+        $scope.isEmpty = isEmpty;
 
     })
 

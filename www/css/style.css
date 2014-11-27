@@ -96,14 +96,18 @@
 	font-weight: 800;
 }
 
-.invited .invited-list .item {
-	background: url('../img/light-green.jpg') 100% no-repeat;
-}
+	.invited .invited-list .item {
+		background: url('../img/light-green.jpg') 100% no-repeat;
+	}
 
-.invited .invited-list .item-invited {
-	opacity: 0.8;
-	background: #D1D1D1 100%;
-}
+	.invited .invited-list .item-invited {
+		opacity: 0.8;
+		background: #D1D1D1 100%;
+	}
+
+	.invited .invited-icons i {
+		font-size: 25px;
+	}
 
 
 .has-error {

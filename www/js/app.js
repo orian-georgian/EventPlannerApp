@@ -16,9 +16,18 @@
       });
     });
 
-    module.value('GOOGLE_API', 'https://www.googleapis.com/calendar/v3/');
+    module.factory('authHttpResponseInterceptor',['$q','$location', function ($q, $location){
+        return {
+            responseError: function(rejection) {
+                if (rejection.status === 401 || rejection.status === 0) {
+                    $location.path('/events');
+                }
+                return $q.reject(rejection);
+            }
+        }
+    }]);
 
-    module.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    module.config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function ($httpProvider, $stateProvider, $urlRouterProvider) {
       $stateProvider
         .state('event', { url: "/events", templateUrl: "templates/events.html", controller: 'AppCtrl'})
         .state('menu', {
@@ -46,6 +55,7 @@
           }
         });
         $urlRouterProvider.otherwise('/events');
+        $httpProvider.interceptors.push('authHttpResponseInterceptor');
     }]);
 
 }).call(this, this.angular);

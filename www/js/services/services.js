@@ -98,10 +98,10 @@
 
 	});
 
-	module.service('InvitedService', function ($http, $q, $cookieStore) {
+	module.service('InvitedService', function ($http, $q, $cookieStore, AuthenticationModel) {
 
 		var contactsMapper = new mapper();
-		var authModel = $cookieStore.get('login.state');
+		var authModel = _.isUndefined($cookieStore.get('login.state')) ? AuthenticationModel : $cookieStore.get('login.state');
 
 		this.getGoogleContacts = function() {
 			var result = $q.defer();
