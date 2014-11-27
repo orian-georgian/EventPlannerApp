@@ -16,11 +16,12 @@
       });
     });
 
-    module.factory('authHttpResponseInterceptor',['$q','$location', function ($q, $location){
+    module.service('authHttpResponseInterceptor',['$q', '$injector', function ($q, $injector){
         return {
             responseError: function(rejection) {
                 if (rejection.status === 401 || rejection.status === 0) {
-                    $location.path('/events');
+                    var authService = $injector.get('AuthenticationService');
+                    authService.logout().then();
                 }
                 return $q.reject(rejection);
             }

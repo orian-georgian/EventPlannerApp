@@ -3,7 +3,7 @@
 	var module = angular.module('events.services', []),
 		mapper = this.ContactsMapper;
 
-	module.service('AuthenticationService', function ($http, $q, $location, $rootScope, $timeout, $cookieStore, AuthenticationModel){
+	module.service('AuthenticationService', function ($http, $q, $location, $rootScope, $timeout, $cookieStore, AuthenticationModel, WeddingService){
 
 		var deff = {},
 			authModel = $cookieStore.get('login.state');
@@ -85,6 +85,24 @@
 				url : '',
 				method: 'POST',
 				data : weddingPlan
+			})
+			.success(function(data){
+				result.resolve(data);
+			})
+			.error(function(error){
+				result.reject(error);
+			});
+
+			return result.promise;
+		};
+
+		this.sendAuthUserInfo = function(userData) {
+			var result = $q.defer();
+
+			$http({
+				url : '',
+				method: 'POST',
+				data : userData
 			})
 			.success(function(data){
 				result.resolve(data);
