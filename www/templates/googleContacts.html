@@ -11,10 +11,16 @@
           <label class="checkbox">
            <input type="checkbox" ng-model = "contact.toSave">
           </label>
-          {{contact.fullName}}
+          <strong>{{contact.fullName}}</strong>
+          <span class = "pull-right">{{contact.phoneNumber}}</span>
         </li>
     </ul>
-    <button class = "button button-assertive button-block" ng-click = "saveContacts();">Save chosen contacts</button>
   </ion-content>
+  <div class="tabs tabs-icon-top">
+      <a class="tab-item" ng-click = "saveContacts();">
+            <i class="icon ion-android-hand"></i>
+            Save chosen contacts
+        </a>
+    </div>
 </div>
 

@@ -2,7 +2,7 @@
 
 	'use strict';
 
-	function Invited() {
+	function Contact() {
 
 		function getContactId(id) {
 			return id.slice(72);
@@ -13,12 +13,13 @@
 		this.phoneNumber = null;
 		this.emailAddress = null;
 		this.homeAddress = null;
-		this.confirmed = false;
-		this.masculin = true;
+		this.hasConfirmed = false;
+		this.wasInvited = false;
+		this.tableNumber = null;
 
 		this.getId = getContactId;
 	}
 
-	this.Invited = Invited;
+	this.Contact = Contact;
 
 }).call(this);

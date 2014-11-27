@@ -99,6 +99,10 @@
 
     .controller('InvitedCtrl', function($scope, $ionicModal, $ionicPopup, InvitedService) {
 
+      function isEmpty(data) {
+        return _.isEmpty(data) || _.isNull(data) || _.isUndefined(data);
+      }
+
       $ionicModal.fromTemplateUrl('templates/googleContacts.html', {
             scope: $scope
         }).then(function(modal) {
@@ -117,7 +121,16 @@
       };
 
       $scope.saveContacts = function() {
-        console.log(_.where($scope.googleContacts, {toSave:true}));
+        var selectedContacts = _.where($scope.googleContacts, {toSave:true});
+        if (isEmpty(selectedContacts)) {
+          $ionicPopup.alert({
+           title: 'Attention!',
+           template: 'Please select some contacts to add!'
+         });
+        } else {
+          console.log(selectedContacts);
+          /*InvitedService.sendSelectedContacts(selectedContacts).then();*/
+        }
       };
         /*$scope.invitedPeople = DataAdapter.GetInvited();
 

@@ -1,7 +1,7 @@
 (function(angular){	
 
 	var module = angular.module('events.services', []),
-		mapper = this.InvitedMapper;
+		mapper = this.ContactsMapper;
 
 	module.service('AuthenticationService', function ($http, $q, $location, $rootScope, $timeout, $cookieStore, AuthenticationModel){
 
@@ -100,7 +100,7 @@
 
 	module.service('InvitedService', function ($http, $q, $cookieStore) {
 
-		var invitedMapper = new mapper();
+		var contactsMapper = new mapper();
 		var authModel = $cookieStore.get('login.state');
 
 		this.getGoogleContacts = function() {
@@ -115,7 +115,7 @@
 		        }
 			})
 			.success(function(data){
-				result.resolve(invitedMapper.MapInvited(data.feed.entry));
+				result.resolve(contactsMapper.mapContacts(data.feed.entry));
 			})
 			.error(function(error){
 				result.reject(error);
@@ -124,9 +124,19 @@
 			return result.promise;
 		};
 
-		function doThat(data){
-			console.log(data);
-		}
+		this.sendSelectedContacts = function(contacts) {
+			var result = $q.defer();
+			$http({
+				url : '',
+				method : 'POST',
+				data : contactsMapper.unmapContacts(contacts)
+			}).success(function(data){
+				result.resolve(data);
+			}).error(function(error){
+				result.reject(error);
+			});
+			return result.promise;
+		};
 
 		this.removeContact = function(contactId) {
 			var result = $q.defer();
@@ -148,22 +158,6 @@
 			.error(function(error){
 				result.reject(error);
 			});*/
-
-			gapi.client.request({
-					path: '/m8/feeds/contacts/' + authModel.email + '/full/' + contactId,
-					method: 'POST',
-					params: {
-						access_token : authModel.token,
-		          		alt: 'json'
-					},
-					headers: {
-						'X-HTTP-Method-Override': 'DELETE',
-						'If-Match': '*'
-					},
-					callback: doThat
-				});
-
-			return result.promise;
 		};
 
 	});
