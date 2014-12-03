@@ -1,6 +1,12 @@
 (function(angular){
 
-    var module = angular.module('eventPlanner', ['ionic', 'events.models', 'events.controllers', 'events.services', 'ngCookies'])
+    var module = angular.module('eventPlanner', ['ionic', 'ngCordova', 'events.models', 'events.controllers', 'events.services', 'ngCookies'])
+
+    module.constant('CONSTANTS', {
+      CLIENT_ID : '285780208615-tuarvu02t2ou4eonj0tel7905hch1st5.apps.googleusercontent.com',
+      CLIENT_SECRET : '9pGiPun2lkNdbtL8Jp7opEqb',
+      API_KEY : 'AIzaSyDj-csmlxCNe9FcOzhJ_wsW-FziLd-cLhI'
+    });
 
     module.run(function($ionicPlatform) {
       $ionicPlatform.ready(function() {
@@ -21,7 +27,7 @@
             responseError: function(rejection) {
                 if (rejection.status === 401 || rejection.status === 0) {
                     var authService = $injector.get('AuthenticationService');
-                    authService.logout().then();
+                    /*authService.logout().then();*/
                 }
                 return $q.reject(rejection);
             }

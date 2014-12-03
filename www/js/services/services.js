@@ -3,12 +3,101 @@
 	var module = angular.module('events.services', []),
 		mapper = this.ContactsMapper;
 
-	module.service('AuthenticationService', function ($http, $q, $location, $rootScope, $timeout, $cookieStore, AuthenticationModel, WeddingService){
+	module.factory('$localStorage', ['$window', '$cookieStore', function ($window, $cookieStore) {
+
+		var hasLocalStorage = Boolean($window.localStorage),
+            hasSessionStorage = Boolean($window.sessionStorage);
+
+        function storeData(key, value) {
+            if (hasLocalStorage) {
+                $window.localStorage[key] = angular.toJson(value);
+                return;
+            }
+            if (hasSessionStorage) {
+                $window.sessionStorage[key] = angular.toJson(value);
+                return;
+            }
+            $cookieStore.put(key, value);
+        }
+
+        function readData(key) {
+            if (hasLocalStorage) {
+                return angular.fromJson($window.localStorage[key]);
+            }
+            if (hasSessionStorage) {
+                return angular.fromJson($window.sessionStorage[key]);
+            }
+            return $cookieStore.get(key);
+        }
+
+        function removeData(key) {
+            if (hasLocalStorage) {
+                if (angular.isFunction($window.localStorage.removeItem)) {
+                    $window.localStorage.removeItem(key);
+                    return;
+                }
+                delete $window.localStorage[key];
+                return;
+            }
+            if (hasSessionStorage) {
+                if (angular.isFunction($window.sessionStorage.removeItem)) {
+                    $window.sessionStorage.removeItem(key);
+                    return;
+                }
+                delete $window.sessionStorage[key];
+                return;
+            }
+            $cookieStore.remove(key);
+        }
+
+		return {
+			Set : storeData,
+        	Get : readData,
+        	Zap : removeData
+		};
+	}]);
+
+	module.service('AuthenticationService', function ($http, $q, $state, $rootScope, $timeout, $localStorage, AuthenticationModel, WeddingService, CONSTANTS){
 
 		var deff = {},
-			authModel = $cookieStore.get('login.state');
+			requestToken = '',
+			accessToken = '';
+
+		$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 		this.login = function() {
+			deff = $q.defer();
+			var ref = window.open('https://accounts.google.com/o/oauth2/auth?client_id=' + CONSTANTS.CLIENT_ID + '&redirect_uri=http://localhost/callback&scope=https://www.googleapis.com/auth/urlshortener&approval_prompt=force&response_type=code&access_type=offline', '_blank', 'location=no');
+	        ref.addEventListener('loadstart', function(event) { 
+	            if((event.url).startsWith("http://localhost/callback")) {
+	                requestToken = (event.url).split("code=")[1];
+	                $http({method: "post", url: "https://accounts.google.com/o/oauth2/token", data: "client_id=" + CONSTANTS.CLIENT_ID + "&client_secret=" + CONSTANTS.CLIENT_SECRET + "&redirect_uri=http://localhost/callback" + "&grant_type=authorization_code" + "&code=" + requestToken })
+	                    .success(function(data) {
+	                        accessToken = data.access_token;
+	                        $state.go('menu.wedding');
+	                        AuthenticationModel.isLoggedIn = true;
+							AuthenticationModel.token = data.access_token;
+							$localStorage.Set('login.state', AuthenticationModel);
+							$rootScope.$apply(function() {
+					          	deff.resolve(AuthenticationModel);
+					        });
+	                    })
+	                    .error(function(data, status) {
+	                        alert("ERROR: " + data);
+	                    });
+	                ref.close();
+	            }
+	        });
+	        return deff.promise;
+		};
+
+		if (typeof String.prototype.startsWith != 'function') {
+			String.prototype.startsWith = function (str){
+				return this.indexOf(str) == 0;
+			};
+		}
+
+		/*this.login = function() {
 			deff = $q.defer();
 			doLogin();
 			return deff.promise;
@@ -17,13 +106,13 @@
 		var doLogin = function() {
 			
 			var myParams = {
-			    'clientid' : '285780208615-iech8k82l3qjb8q51d7kveog1qomaj4s.apps.googleusercontent.com',
+			    'clientid' : '285780208615-292q56s16pvvnnhfqjbecthstgtrqmvo.apps.googleusercontent.com',
 			    'cookiepolicy' : 'single_host_origin',
 			    'immediate': true,
 			    'callback' : handleLogin,
-			    'scope' : 'https://apps-apis.google.com/a/feeds/groups/ https://apps-apis.google.com/a/feeds/alias/ https://apps-apis.google.com/a/feeds/user/ https://www.google.com/m8/feeds/ https://www.google.com/m8/feeds/user/ https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read https://www.googleapis.com/auth/plus.me'
+			    'scope' : 'https://www.google.com/m8/feeds/ https://www.google.com/m8/feeds/user/ https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email'
 			  };
-			  gapi.auth.signIn(myParams);
+			  gapi.auth.authorize(myParams);
 		};
 
 		var handleLogin = function(authResult) {
@@ -38,14 +127,25 @@
 			        });
 				}
 			});
-		};
+		};*/
 
 		this.logout = function(){
+			var authModel = $localStorage.Get('login.state');
 			deff = $q.defer();
-			gapi.auth.signOut();
-			$location.path('/events');
-			AuthenticationModel.isLoggedIn = false;
-			$cookieStore.remove('login.state');
+			$http({
+				url : 'https://accounts.google.com/o/oauth2/revoke',
+				method : 'GET',
+				params : {
+					token : authModel.token
+				}
+			}).success(function(data){
+				deff.resolve(data);
+				$state.go('event');
+				AuthenticationModel.isLoggedIn = false;
+				$localStorage.Zap('login.state');
+			}).error(function(){
+				deff.reject(data);
+			});
 			return deff.promise;
 		};
 

@@ -56,9 +56,9 @@
       };
 
       $scope.login = function() {
-        AuthenticationService.login().then(function(authenticationModel){
+          AuthenticationService.login().then(function(authenticationModel){
             $scope.authenticationModel = authenticationModel;
-        })
+          });
       };
 
       $scope.weddingPlanBox = function() {
