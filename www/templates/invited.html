@@ -9,10 +9,13 @@
                 Import contacts from google account
             </a>
 
-            <div ng-hide = "!isEmpty(invitedContacts)" class="item item-body">
+            <!-- <div ng-hide = "!isEmpty(invitedContacts)" class="item item-body">
                 <span>There is no invited added or imported!</span>
+            </div> -->
+            <div class="item item-body item-icon" ng-repeat = "contact in phoneContacts">
+            {{contact}}
             </div>
-            <div ng-show = "!isEmpty(invitedContacts)" class="item item-body item-icon" ng-repeat = "contact in invitedContacts | orderBy : 'fullName'">
+            <!-- <div ng-show = "!isEmpty(invitedContacts)" class="item item-body item-icon" ng-repeat = "contact in invitedContacts | orderBy : 'fullName'">
                 <div class = "row">
                     <div class = "col col-90">
                         <strong>{{contact.fullName}}</strong> - <span>{{contact.phoneNumber}}</span><br/>
@@ -26,7 +29,7 @@
                         <a href = "" ng-click = "removeContact(contact);"><i class="icon ion-ios7-trash"></i></a>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </ion-content>
     <ion-footer-bar>

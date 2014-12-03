@@ -94,7 +94,7 @@
 
     })
 
-    .controller('InvitedCtrl', function($scope, $ionicModal, $ionicPopup, InvitedService) {
+    .controller('InvitedCtrl', function($scope, $cordovaContacts, $ionicModal, $ionicPopup, InvitedService) {
 
       $scope.invitedContacts = [];
       $scope.isHidden = true;
@@ -110,10 +110,17 @@
         });
 
       $scope.importGoogleContacts = function() {
-        InvitedService.getGoogleContacts().then(function(data){
+        /*InvitedService.getGoogleContacts().then(function(data){
           $scope.googleContacts = data;
           $scope.googleModal.show();
-        });
+        });*/
+        var options = {};
+       options.filter = "";
+       options.multiple = true;
+
+       //get the phone contacts
+       var contacts =  $cordovaContacts.find(options);
+       $scope.phoneContacts = contacts;
       };
 
       $scope.closeGoogleContacts = function() {

@@ -3,51 +3,22 @@
 	var module = angular.module('events.services', []),
 		mapper = this.ContactsMapper;
 
-	module.factory('$localStorage', ['$window', '$cookieStore', function ($window, $cookieStore) {
-
-		var hasLocalStorage = Boolean($window.localStorage),
-            hasSessionStorage = Boolean($window.sessionStorage);
+	module.factory('$localStorage', ['$window', function ($window) {
 
         function storeData(key, value) {
-            if (hasLocalStorage) {
-                $window.localStorage[key] = angular.toJson(value);
-                return;
-            }
-            if (hasSessionStorage) {
-                $window.sessionStorage[key] = angular.toJson(value);
-                return;
-            }
-            $cookieStore.put(key, value);
+            $window.localStorage[key] = angular.toJson(value);
         }
 
         function readData(key) {
-            if (hasLocalStorage) {
-                return angular.fromJson($window.localStorage[key]);
-            }
-            if (hasSessionStorage) {
-                return angular.fromJson($window.sessionStorage[key]);
-            }
-            return $cookieStore.get(key);
+            return angular.fromJson($window.localStorage[key]);
         }
 
         function removeData(key) {
-            if (hasLocalStorage) {
-                if (angular.isFunction($window.localStorage.removeItem)) {
-                    $window.localStorage.removeItem(key);
-                    return;
-                }
-                delete $window.localStorage[key];
+            if (angular.isFunction($window.localStorage.removeItem)) {
+                $window.localStorage.removeItem(key);
                 return;
             }
-            if (hasSessionStorage) {
-                if (angular.isFunction($window.sessionStorage.removeItem)) {
-                    $window.sessionStorage.removeItem(key);
-                    return;
-                }
-                delete $window.sessionStorage[key];
-                return;
-            }
-            $cookieStore.remove(key);
+            delete $window.localStorage[key];
         }
 
 		return {
@@ -77,7 +48,7 @@
 	                        $state.go('menu.wedding');
 	                        AuthenticationModel.isLoggedIn = true;
 							AuthenticationModel.token = data.access_token;
-							$localStorage.Set('login.state', AuthenticationModel);
+							$localStorage.Set('token', AuthenticationModel);
 							$rootScope.$apply(function() {
 					          	deff.resolve(AuthenticationModel);
 					        });
@@ -97,40 +68,8 @@
 			};
 		}
 
-		/*this.login = function() {
-			deff = $q.defer();
-			doLogin();
-			return deff.promise;
-		};
-
-		var doLogin = function() {
-			
-			var myParams = {
-			    'clientid' : '285780208615-292q56s16pvvnnhfqjbecthstgtrqmvo.apps.googleusercontent.com',
-			    'cookiepolicy' : 'single_host_origin',
-			    'immediate': true,
-			    'callback' : handleLogin,
-			    'scope' : 'https://www.google.com/m8/feeds/ https://www.google.com/m8/feeds/user/ https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email'
-			  };
-			  gapi.auth.authorize(myParams);
-		};
-
-		var handleLogin = function(authResult) {
-			gapi.client.oauth2.userinfo.get().execute(function (response){
-				if (!response.code) {
-					AuthenticationModel.isLoggedIn = true;
-					AuthenticationModel.token = authResult.access_token;
-					AuthenticationModel.email = response.email;
-					$cookieStore.put('login.state', AuthenticationModel);
-					$rootScope.$apply(function() {
-			          	deff.resolve(AuthenticationModel);
-			        });
-				}
-			});
-		};*/
-
 		this.logout = function(){
-			var authModel = $localStorage.Get('login.state');
+			var authModel = $localStorage.Get('token');
 			deff = $q.defer();
 			$http({
 				url : 'https://accounts.google.com/o/oauth2/revoke',
@@ -142,7 +81,7 @@
 				deff.resolve(data);
 				$state.go('event');
 				AuthenticationModel.isLoggedIn = false;
-				$localStorage.Zap('login.state');
+				$localStorage.Zap('token');
 			}).error(function(){
 				deff.reject(data);
 			});
