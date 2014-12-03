@@ -94,7 +94,7 @@
 
     })
 
-    .controller('InvitedCtrl', function($scope, $cordovaContacts, $ionicModal, $ionicPopup, InvitedService) {
+    .controller('InvitedCtrl', function($scope, $document, $cordovaContacts, $ionicModal, $ionicPopup, InvitedService) {
 
       $scope.invitedContacts = [];
       $scope.isHidden = true;
@@ -114,13 +114,26 @@
           $scope.googleContacts = data;
           $scope.googleModal.show();
         });*/
-        var options = {};
-       options.filter = "";
-       options.multiple = true;
-
-       //get the phone contacts
-       var contacts =  $cordovaContacts.find(options);
-       $scope.phoneContacts = contacts;
+          $document.addEventListener("deviceready", onDeviceReady, false);
+          function onDeviceReady() {
+              console.log(navigator.contacts);
+              $ionicPopup.alert({
+                     title: 'Attention!',
+                     template: 'navigator!' + navigator.contacts
+                   });
+              $cordovaContacts.find({filter: ''}).then(function(result) {
+                  $scope.phoneContacts = result;
+                  $ionicPopup.alert({
+                     title: 'Attention!',
+                     template: 'success!' + result
+                   });
+              }, function(error) {
+                  $ionicPopup.alert({
+                     title: 'Attention!',
+                     template: 'error!' +error
+                   });
+              });
+          }
       };
 
       $scope.closeGoogleContacts = function() {
